@@ -1,43 +1,37 @@
 use std::collections::HashMap;
+use std::os::macos::raw::stat;
 
 struct Solution();
 
 impl Solution {
     pub fn is_valid(s: String) -> bool {
-        if s.len() == 0 {
-            return true;
-        }
-
-        let mut mapping: HashMap<char, char> = HashMap::new();
-        mapping.insert('(', ')');
-        mapping.insert('[', ']');
-        mapping.insert('{', '}');
-
-        let mut left = Vec::new();
-        for ref elm in s.chars() {
-            if mapping.contains_key(elm) {
-                left.push(elm.clone());
-            } else {
-                match left.pop().and_then(
-                    |c| mapping.get(&c).map(|c| c == elm)
-                ) {
-                    Some(v) => {
-                        if !v {
-                            return false;
-                        }
-                    },
-                    None => { return false }
+        let mut stack: Vec<char> = Vec::new();
+        for elm in s.chars().into_iter() {
+            match stack.last() {
+                None => {},
+                Some(&v) => {
+                    if Solution::pair(v, elm) {
+                        stack.pop();
+                        continue
+                    }
                 }
             }
+            stack.push(elm);
         }
 
-        return left.len() == 0;
+        stack.is_empty()
+    }
+
+    pub fn pair(open: char, close: char) -> bool {
+        (open == '(' && close == ')')
+            || (open == '[' && close == ']')
+            || (open == '{' && close == '}')
     }
 }
 
 mod tests {
     #[test]
-    pub fn test_l20() {
+    pub fn test_solution() {
         use super::*;
         assert_eq!(Solution::is_valid(String::from("[](){}")), true);
         assert_eq!(Solution::is_valid(String::from("{([])}")), true);

@@ -23,9 +23,8 @@ impl Solution {
 
             let mut temp = Solution::two_sum(&nums[i+1..], 0-nums[i]);
             for v in temp.iter_mut() {
-                v.insert(0, nums[i]);
+                result.push(vec![nums[i], v.0, v.1]);
             }
-            result.extend(temp);
 
             i += 1;
         }
@@ -33,26 +32,20 @@ impl Solution {
         result
     }
 
-    pub fn two_sum(nums: &[i32], target: i32) -> Vec<Vec<i32>> {
-        let mut pair: HashMap<i32, i32> = HashMap::new();
-        let mut result: Vec<Vec<i32>> = Vec::new();
-        let mut i = 0;
-        while i < nums.len() {
-            if pair.contains_key(&nums[i]) {
-                let mut temp: Vec<i32> = Vec::new();
-                temp.push(pair.get(&nums[i]).unwrap().clone());
-                temp.push(nums[i]);
-
-                result.push(temp);
-
-                i = Solution::next_unique(nums, i, true);
-            } else {
-                pair.insert(target - nums[i], nums[i].clone());
-
+    pub fn two_sum(nums: &[i32], target: i32) -> Vec<(i32, i32)> {
+        let mut result: Vec<(i32, i32)> = Vec::new();
+        let (mut i, mut j) = (0_usize, nums.len() - 1);
+        while i < j {
+            if nums[i] + nums[j] > target {
+                j -= 1;
+            } else if nums[i] + nums[j] < target {
                 i += 1;
+            } else {
+                result.push((nums[i], nums[j]));
+                i = Solution::next_unique(nums, i, true);
+                j = Solution::next_unique(nums, j, false);
             }
         }
-
         result
     }
 

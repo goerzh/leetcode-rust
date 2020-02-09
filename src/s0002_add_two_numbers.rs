@@ -50,17 +50,16 @@ impl Solution {
                     node.val
                 }
             };
-            target = lhs + rhs;
+            target = lhs + rhs + if carry {1} else {0};
 
-            if carry {
-                target += 1;
-                carry = false;
-            }
             if target >= 10 {
                 carry = true;
+                target -= 10;
+            } else {
+                carry = false;
             }
 
-            curr.as_mut().unwrap().next = Some(Box::new(ListNode{val:target%10, next:None}));
+            curr.as_mut().unwrap().next = Some(Box::new(ListNode{val:target, next:None}));
             curr = &mut curr.as_mut().unwrap().next;
         }
         head.unwrap().next

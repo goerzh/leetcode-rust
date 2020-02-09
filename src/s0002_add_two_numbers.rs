@@ -29,8 +29,28 @@ impl Solution {
         let mut curr = &mut head;
         
         while l1.is_some() || l2.is_some() || carry == true {
-            target = l1.as_ref().unwrap_or(&Box::new(ListNode{val:0, next:None})).val
-                + l2.as_ref().unwrap_or(&Box::new(ListNode{val:0, next:None})).val;
+            let lhs = match l1 {
+                None => {
+                    l1 = None;
+                    0
+                },
+                Some(node) => {
+                    l1 = node.next;
+                    node.val
+                }
+            };
+
+            let rhs = match l2 {
+                None => {
+                    l2 = None;
+                    0
+                },
+                Some(node) => {
+                    l2 = node.next;
+                    node.val
+                }
+            };
+            target = lhs + rhs;
 
             if carry {
                 target += 1;
@@ -39,11 +59,9 @@ impl Solution {
             if target >= 10 {
                 carry = true;
             }
+
             curr.as_mut().unwrap().next = Some(Box::new(ListNode{val:target%10, next:None}));
             curr = &mut curr.as_mut().unwrap().next;
-
-            l1 = l1.unwrap_or(Box::new(ListNode{val:0, next:None})).next;
-            l2 = l2.unwrap_or(Box::new(ListNode{val:0, next:None})).next;
         }
         head.unwrap().next
     }

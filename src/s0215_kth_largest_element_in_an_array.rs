@@ -3,15 +3,14 @@ struct Solution;
 impl Solution {
     pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
         let mut nums = nums;
-        let target_index = nums.len() as i32 - k;
         let (mut p, mut r) = (0, (nums.len()-1) as i32);
         let mut result = 0;
         result = Solution::partition(&mut nums, p, r);
         loop {
-            if result == target_index {
+            if result + 1 == k  {
                 break;
             }
-            if result < target_index {
+            if result < k {
                 p = result + 1;
                 result = Solution::partition(&mut nums, p, r);
             } else {
@@ -27,7 +26,7 @@ impl Solution {
         let (mut i, mut j) = (p as usize, p as usize);
         let pivot = v[r as usize];
         while j < r as usize{
-            if v[j] < pivot {
+            if v[j] > pivot {
                 let temp = v[i];
                 v[i] = v[j];
                 v[j] = temp;

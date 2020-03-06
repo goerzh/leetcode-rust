@@ -45,17 +45,15 @@ impl Solution {
 
 mod test{
     use super::*;
+    use std::cmp::Reverse;
 
     #[test]
     pub fn test_solution() {
-        // assert_eq!(Solution::find_kth_largest(vec![3,2,1,5,6,4], 2), 5);
-        // assert_eq!(Solution::find_kth_largest(vec![3,2,3,1,2,4,5,5,6], 4), 4);
-        // assert_eq!(Solution::find_kth_largest(vec![99, 99], 1), 99);
+        assert_eq!(Solution::find_kth_largest(vec![3,2,1,5,6,4], 2), 5);
+        assert_eq!(Solution::find_kth_largest(vec![3,2,3,1,2,4,5,5,6], 4), 4);
+        assert_eq!(Solution::find_kth_largest(vec![99, 99], 1), 99);
         assert_eq!(Solution::find_kth_largest(vec![3,2,3,1,2,4,5,5,6,7,7,8,2,3,1,1,1,10,11,5,6,2,4,7,8,5,6], 20), 2);
 
-        let mut v = vec![3,2,3,1,2,4,5,5,6,7,7,8,2,3,1,1,1,10,11,5,6,2,4,7,8,5,6];
-        v.sort_unstable();
-        println!("{:?}", v[7]);
     }
 }
 
